@@ -40,24 +40,13 @@ fi
 az configure --defaults subscription="$SUBSCRIPTION_NAME"
 printf "Using subscription: ""$SUBSCRIPTION_NAME""\n"
 
-# Set the resource group name if not provided as a parameter
-RANDOM_STRING=$(openssl rand -hex 5)
-#printf "Using random string: $RANDOM_STRING\n"
-RESOURCE_GROUP_NAME="$USER_NAME-signalr-$RANDOM_STRING"
 
-# Create a resource group
-az group create \
-  --subscription "$SUBSCRIPTION_NAME" \
-  --name "$RESOURCE_GROUP_NAME" \
-  --location $LOCATION
+RESOURCE_GROUP_NAME="VaratkarP-signalr-58321ef218"
 
-# Set default resource group
-az configure --defaults group="$RESOURCE_GROUP_NAME"
 
-printf "Using resource group $RESOURCE_GROUP_NAME\n"
 
-export STORAGE_ACCOUNT_NAME=signalr$(openssl rand -hex 5)
-export COMSOSDB_NAME=signalr-cosmos-$(openssl rand -hex 5)
+STORAGE_ACCOUNT_NAME="signalr35619adb8d"
+COMSOSDB_NAME="signalr-cosmos-80af98e3da"
 
 printf "Subscription Name: ""$SUBSCRIPTION_NAME"" \n"
 printf "Resource Group Name: $RESOURCE_GROUP_NAME\n"
@@ -66,25 +55,6 @@ printf "CosmosDB Name: $COMSOSDB_NAME\n"
 
 printf "Creating Storage Account\n"
 
-az storage account create \
-  --subscription "$SUBSCRIPTION_NAME" \
-  --name $STORAGE_ACCOUNT_NAME \
-  --resource-group $RESOURCE_GROUP_NAME \
-  --kind StorageV2 \
-  --sku Standard_LRS
-
-printf "Creating CosmosDB Account\n"
-
-az cosmosdb create  \
-  --subscription "$SUBSCRIPTION_NAME" \
-  --name $COMSOSDB_NAME \
-  --resource-group $RESOURCE_GROUP_NAME
-
-printf "Creating CosmosDB db\n"
-# Create stocksdb database
-az cosmosdb sql database create \
-    --account-name $COMSOSDB_NAME \
-    --name stocksdb
 
 printf "Creating CosmosDB container\n"
 # Create stocks container
@@ -92,7 +62,7 @@ az cosmosdb sql container create \
     --account-name $COMSOSDB_NAME \
     --database-name stocksdb \
     --name stocks \
-    --partition-key-path '/symbol'
+    --partition-key-path /symbol
 
 printf "Get storage connection string\n"
 
