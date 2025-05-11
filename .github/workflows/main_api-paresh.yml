@@ -60,14 +60,12 @@ jobs:
           name: node-app
 
       - name: Zip artifact for deployment
-        shell: bash
+        shell: pwsh
         run: |
-          pushd './${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/${{ env.PACKAGE_PATH }}'
-          zip -r release.zip .
-          popd
-          cp ./${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/${{ env.PACKAGE_PATH }}/release.zip ./release.zip
+          $source = "${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}/${{ env.PACKAGE_PATH }}"
+          Compress-Archive -Path "$source/*" -DestinationPath "release.zip"
 
-      
+     
       - name: Login to Azure
         uses: azure/login@v2
         with:
